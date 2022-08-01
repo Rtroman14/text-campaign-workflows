@@ -88,4 +88,23 @@ module.exports = class Highlevel {
             console.log("ERROR -- textContact() --", error.message);
         }
     }
+
+    async getCustomeFields(name) {
+        try {
+            const config = this.getConfig("get", "https://rest.gohighlevel.com/v1/custom-fields/");
+
+            const { data } = await axios(config);
+
+            const customField = data.customFields.find((field) => field.name === name);
+
+            if (customField) {
+                return customField;
+            }
+
+            return false;
+        } catch (error) {
+            console.log("ERROR GETCUSTOMEFIELDS ---", error);
+            return false;
+        }
+    }
 };

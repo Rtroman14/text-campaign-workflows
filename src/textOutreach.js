@@ -23,7 +23,15 @@ module.exports = async (account) => {
         const contact = await Airtable.getContact(account["Base ID"], view);
 
         if (contact) {
-            const highLevelContact = _.mapContact(contact);
+            let highLevelContact = _.mapContact(contact);
+
+            const companyField = await Highlevel.getCustomeFields("Company");
+            if (companyField && "Company Name" in contact) {
+                highLevelContact = {
+                    ...highLevelContact,
+                    customField: { [companyField.id]: contact["Company Name"] },
+                };
+            }
 
             try {
                 const texted = await Highlevel.textContact(
