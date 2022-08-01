@@ -21,14 +21,14 @@ const numContacts = 60;
         const getCampaigns = await Airtable.getCampaigns();
         let accounts = _.accountsToRun(getCampaigns);
 
-        accounts = accounts.filter(
-            (acc) =>
-                acc.Account === "All Square Roofing - Illinois" ||
-                acc.Account === "Eco Tec - David" ||
-                acc.Account === "Pete's Builders" ||
-                acc.Account === "SIRC" ||
-                acc.Account === "Pro Roof Solutions"
-        );
+        // accounts = accounts.filter(
+        //     (acc) =>
+        //         acc.Account === "All Square Roofing - Illinois" ||
+        //         acc.Account === "Eco Tec - David" ||
+        //         acc.Account === "Pete's Builders" ||
+        //         acc.Account === "SIRC" ||
+        //         acc.Account === "Pro Roof Solutions"
+        // );
 
         await slackNotification("Launching texts...");
 
