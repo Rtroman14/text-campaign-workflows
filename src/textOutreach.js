@@ -1,6 +1,6 @@
 require("dotenv").config();
 
-const axios = require("axios");
+const moment = require("moment");
 
 const HighlevelApi = require("./HighLevel");
 const AirtableApi = require("./Airtable");
@@ -24,6 +24,12 @@ module.exports = async (account) => {
 
         if (contact) {
             let highLevelContact = _.mapContact(contact);
+
+            // let time = moment().format("MMDDYY-hhmmss");
+            highLevelContact = {
+                ...highLevelContact,
+                // email: `${time}-${(Math.random() * 100).toFixed(0)}@test.com`,
+            };
 
             const companyField = await Highlevel.getCustomeFields("Company");
             if (companyField && "Company Name" in contact) {
@@ -50,20 +56,13 @@ module.exports = async (account) => {
                         `Account: ${account.Account} | Campaign: ${account.Campaign} | texted: ${highLevelContact.name}`
                     );
 
-                    if (account.Client === "Greenscape") {
-                        await axios.post(
-                            "https://greenscape.netlify.app/.netlify/functions/addToPipedrive",
-                            highLevelContact
-                        );
-                    }
-
-                    return { ...account, status: "Live" };
+                    return { ...account, status: "Live", texted: highLevelContact.name };
                 }
             } catch (error) {
                 // RUNS IF ERROR WHILE TEXTING
-                await Airtable.updateContact(account["Base ID"], contact.recordID, {
-                    Error: true,
-                });
+                // await Airtable.updateContact(account["Base ID"], contact.recordID, {
+                //     Error: true,
+                // });
 
                 console.log(`ERROR TEXTING CONTACT --- ${account.Client} --- ${error.message}`);
 

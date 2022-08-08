@@ -14,7 +14,7 @@ const slackNotification = require("./src/slackNotification");
 
 const today = moment(new Date()).format("MM/DD/YYYY");
 
-const numContacts = 60;
+const numContacts = 60 - 10;
 
 (async () => {
     try {
@@ -23,11 +23,23 @@ const numContacts = 60;
 
         // accounts = accounts.filter(
         //     (acc) =>
-        //         acc.Account === "All Square Roofing - Illinois" ||
+        //         acc.Account === "Hawkeye Flat Roof Solutions" ||
+        //         acc.Account === "All Elements" ||
+        //         acc.Account === "Beckwith Commercial Roofing" ||
+        //         acc.Account === "Blue Springs Commercial" ||
+        //         acc.Account === "Central Oregon Roofing" ||
+        //         acc.Account === "Dorothy Gale Roofing Group" ||
+        //         acc.Account === "Eco Tec - Josh" ||
         //         acc.Account === "Eco Tec - David" ||
+        //         acc.Account === "Harrison Roofing" ||
+        //         acc.Account === "Integrity Pro Roofing" ||
+        //         acc.Account === "Pitts Roofing" ||
         //         acc.Account === "Pete's Builders" ||
         //         acc.Account === "SIRC" ||
-        //         acc.Account === "Pro Roof Solutions"
+        //         acc.Account === "Pro Roof Solutions" ||
+        //         acc.Account === "Premier Building Associates" ||
+        //         acc.Account === "SCS Construction" ||
+        //         acc.Account === "SouthShore Roofing & Exteriors"
         // );
 
         await slackNotification("Launching texts...");
@@ -36,6 +48,19 @@ const numContacts = 60;
             const arrayTextOutreach = accounts.map((account) => textOutreach(account));
 
             const results = await Promise.all(arrayTextOutreach);
+
+            // * check to see if client texted same prospect twice
+            const textedProspects = results
+                .filter((res) => res?.status === "Live")
+                .map((res) => `${res.Client} - ${res.texted}`);
+
+            const textedSameProspect = _.hasDuplicates(textedProspects);
+            if (textedSameProspect) {
+                new Error("TEXTED SAME PROSPECT!!");
+                console.log(
+                    "Check logs. One of our clients texted the same prospect multiple times. This is most likely because a filter wasn't set in Airtable."
+                );
+            }
 
             for (let result of results) {
                 if (result?.status === "Need More Contacts") {
@@ -80,7 +105,7 @@ const numContacts = 60;
             }
 
             console.log(`\n --- Texts sent: ${i} --- \n`);
-            await _.minutesWait(1.5);
+            await _.minutesWait(2);
         }
     } catch (error) {
         console.log(error);

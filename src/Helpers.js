@@ -145,12 +145,15 @@ class Helpers {
             city: contact.City || "",
             state: contact.State || "",
             postalCode: contact.Zip || "",
+            customField: {},
         };
     }
 
     sortByKeyString(array, key) {
         return array.sort((a, b) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0));
     }
+
+    hasDuplicates = (array) => new Set(array).size !== array.length;
 }
 
 module.exports = new Helpers();

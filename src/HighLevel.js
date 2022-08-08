@@ -31,19 +31,20 @@ module.exports = class Highlevel {
         }
     }
 
-    async createContact(data) {
+    async createContact(contact) {
         try {
             const config = this.getConfig(
                 "post",
                 "https://rest.gohighlevel.com/v1/contacts/",
-                data
+                contact
             );
 
-            const res = await axios(config);
+            const { data } = await axios(config);
 
-            return res.data.contact;
+            return data.contact;
         } catch (error) {
             console.log("ERROR CREATECONTACT ---", error);
+            return false;
         }
     }
 
@@ -86,6 +87,9 @@ module.exports = class Highlevel {
             return { ...contact, ...res };
         } catch (error) {
             console.log("ERROR -- textContact() --", error.message);
+            return {
+                status: "400",
+            };
         }
     }
 
@@ -103,7 +107,7 @@ module.exports = class Highlevel {
 
             return false;
         } catch (error) {
-            console.log("ERROR GETCUSTOMEFIELDS ---", error);
+            // console.log("ERROR GETCUSTOMEFIELDS ---", error);
             return false;
         }
     }
