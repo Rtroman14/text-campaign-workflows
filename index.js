@@ -14,7 +14,7 @@ const slackNotification = require("./src/slackNotification");
 
 const today = moment(new Date()).format("MM/DD/YYYY");
 
-const numContacts = 60 - 10;
+const numContacts = 60;
 
 (async () => {
     try {
@@ -23,24 +23,17 @@ const numContacts = 60 - 10;
 
         // accounts = accounts.filter(
         //     (acc) =>
-        //         acc.Account === "Hawkeye Flat Roof Solutions" ||
-        //         acc.Account === "All Elements" ||
-        //         acc.Account === "Beckwith Commercial Roofing" ||
-        //         acc.Account === "Blue Springs Commercial" ||
-        //         acc.Account === "Central Oregon Roofing" ||
-        //         acc.Account === "Dorothy Gale Roofing Group" ||
-        //         acc.Account === "Eco Tec - Josh" ||
-        //         acc.Account === "Eco Tec - David" ||
-        //         acc.Account === "Harrison Roofing" ||
-        //         acc.Account === "Integrity Pro Roofing" ||
-        //         acc.Account === "Pitts Roofing" ||
-        //         acc.Account === "Pete's Builders" ||
-        //         acc.Account === "SIRC" ||
-        //         acc.Account === "Pro Roof Solutions" ||
-        //         acc.Account === "Premier Building Associates" ||
-        //         acc.Account === "SCS Construction" ||
-        //         acc.Account === "SouthShore Roofing & Exteriors"
+        //         acc.Client !== "A Best Roofing" &&
+        //         acc.Client !== "Farha Roofing" &&
+        //         acc.Client !== "Integrity Pro Roofing" &&
+        //         acc.Client !== "Eco Tec" &&
+        //         acc.Client !== "Roper Roofing" &&
+        //         acc.Client !== "SCS Construction" &&
+        //         acc.Client !== "SIRC" &&
+        //         acc.Account !== "All Elements - Facilities"
         // );
+
+        // accounts = accounts.filter((acc) => acc.Account === "SouthShore Roofing & Exteriors");
 
         await slackNotification("Launching texts...");
 

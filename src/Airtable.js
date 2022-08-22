@@ -83,7 +83,7 @@ module.exports = class AirtableApi {
 
             await base("Prospects").update(recordID, updatedFields);
         } catch (error) {
-            console.log("ERROR UPDATECONTACT() ---", error);
+            console.log("ERROR UPDATECONTACT() ---", error.message);
         }
     }
 

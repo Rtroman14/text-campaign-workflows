@@ -43,7 +43,7 @@ module.exports = class Highlevel {
 
             return data.contact;
         } catch (error) {
-            console.log("ERROR CREATECONTACT ---", error);
+            console.log("ERROR CREATECONTACT ---", error.message);
             return false;
         }
     }
