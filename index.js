@@ -50,7 +50,7 @@ const numContacts = 60;
             const textedSameProspect = _.hasDuplicates(textedProspects);
             if (textedSameProspect) {
                 await slackNotification("TEXTED SAME PROSPECT MULTIPLE TIMES!!");
-                throw new Error("TEXTED SAME PROSPECT!!");
+                throw new Error("\nTEXTED SAME PROSPECT!!");
             }
 
             for (let result of results) {
