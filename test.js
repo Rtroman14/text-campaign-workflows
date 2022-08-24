@@ -1,21 +1,27 @@
 require("dotenv").config();
 
+const moment = require("moment");
+
 const textOutreach = require("./src/textOutreach");
 const numTextContacts = require("./src/numTextContacts");
 
 const AirtableApi = require("./src/Airtable");
 const Airtable = new AirtableApi(process.env.AIRTABLE_API_KEY);
-const HighlevelApi = require("./src/HighLevel");
 
 const _ = require("./src/Helpers");
 
+const slackNotification = require("./src/slackNotification");
+
+const today = moment(new Date()).format("MM/DD/YYYY");
+
+const numContacts = 60;
+
 (async () => {
     try {
-        const arr = [1, 2, 3, 4, 5];
+        const getCampaigns = await Airtable.getCampaigns();
+        let accounts = _.accountsToRun(getCampaigns);
 
-        const hasDuplicates = (array) => new Set(array).size !== array.length;
-
-        console.log(hasDuplicates(arr));
+        throw new Error("TEXTED SAME PROSPECT!!");
     } catch (error) {
         console.log(error);
     }

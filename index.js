@@ -33,7 +33,7 @@ const numContacts = 60;
         //         acc.Account !== "All Elements - Facilities"
         // );
 
-        // accounts = accounts.filter((acc) => acc.Account === "SouthShore Roofing & Exteriors");
+        // accounts = accounts.filter((acc) => acc.Account === "Built Right Roofing");
 
         await slackNotification("Launching texts...");
 
@@ -49,10 +49,8 @@ const numContacts = 60;
 
             const textedSameProspect = _.hasDuplicates(textedProspects);
             if (textedSameProspect) {
-                new Error("TEXTED SAME PROSPECT!!");
-                console.log(
-                    "Check logs. One of our clients texted the same prospect multiple times. This is most likely because a filter wasn't set in Airtable."
-                );
+                await slackNotification("TEXTED SAME PROSPECT MULTIPLE TIMES!!");
+                throw new Error("TEXTED SAME PROSPECT!!");
             }
 
             for (let result of results) {
