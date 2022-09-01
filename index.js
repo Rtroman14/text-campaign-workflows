@@ -25,8 +25,8 @@ const numContacts = 60;
         accounts = accounts.filter(
             (acc) =>
                 acc.Client !== "SCS Construction" &&
-                acc.Account !== "SCS Construction" &&
-                acc.Client !== "SCS Construction"
+                acc.Client !== "HD Roofing" &&
+                acc.Account !== "Roper Roofing - solar"
         );
 
         // * keep all facilities
