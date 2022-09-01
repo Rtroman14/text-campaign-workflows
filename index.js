@@ -26,6 +26,7 @@ const numContacts = 60;
             (acc) =>
                 acc.Client !== "SCS Construction" &&
                 acc.Client !== "HD Roofing" &&
+                acc.Client !== "Integrity Pro Roofing" &&
                 acc.Account !== "Roper Roofing - solar"
         );
 
