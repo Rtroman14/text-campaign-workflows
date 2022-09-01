@@ -21,19 +21,19 @@ const numContacts = 60;
         const getCampaigns = await Airtable.getCampaigns();
         let accounts = _.accountsToRun(getCampaigns);
 
-        // accounts = accounts.filter(
-        //     (acc) =>
-        //         acc.Client !== "A Best Roofing" &&
-        //         acc.Client !== "Farha Roofing" &&
-        //         acc.Client !== "Integrity Pro Roofing" &&
-        //         acc.Client !== "Eco Tec" &&
-        //         acc.Client !== "Roper Roofing" &&
-        //         acc.Client !== "SCS Construction" &&
-        //         acc.Client !== "SIRC" &&
-        //         acc.Account !== "All Elements - Facilities"
-        // );
+        // * remove these clients/accounts
+        accounts = accounts.filter(
+            (acc) =>
+                acc.Client !== "SCS Construction" &&
+                acc.Account !== "SCS Construction" &&
+                acc.Client !== "SCS Construction"
+        );
 
-        // accounts = accounts.filter((acc) => acc.Account === "Built Right Roofing");
+        // * keep all facilities
+        // accounts = accounts.filter((acc) => acc.Tag?.includes("facilities"));
+
+        // * remove all facilities
+        accounts = accounts.filter((acc) => !acc.Tag?.includes("facilities"));
 
         await slackNotification("Launching texts...");
 
