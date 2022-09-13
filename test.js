@@ -21,7 +21,7 @@ const numContacts = 60;
         const getCampaigns = await Airtable.getCampaigns();
         let accounts = _.accountsToRun(getCampaigns);
 
-        throw new Error("TEXTED SAME PROSPECT!!");
+        console.log(accounts);
     } catch (error) {
         console.log(error);
     }

@@ -14,31 +14,49 @@ const slackNotification = require("./src/slackNotification");
 
 const today = moment(new Date()).format("MM/DD/YYYY");
 
-const numContacts = 60;
+const RUN_FACILITIES = false;
+
+const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
 
 (async () => {
     try {
         const getCampaigns = await Airtable.getCampaigns();
         let accounts = _.accountsToRun(getCampaigns);
+        console.log(accounts);
 
         // * remove these clients/accounts
-        accounts = accounts.filter(
-            (acc) =>
-                acc.Client !== "SCS Construction" &&
-                acc.Client !== "HD Roofing" &&
-                acc.Client !== "Integrity Pro Roofing" &&
-                acc.Account !== "Roper Roofing - solar"
-        );
+        // accounts = accounts.filter(
+        //     (acc) =>
+        // acc.Client !== "SCS Construction" &&
+        // acc.Client !== "HD Roofing" &&
+        // acc.Client !== "Integrity Pro Roofing" &&
+        // acc.Client !== "Dorothy Gale Roofing Group"
+        // );
 
-        // * keep all facilities
-        // accounts = accounts.filter((acc) => acc.Tag?.includes("facilities"));
+        // * keep these clients/accounts
+        // accounts = accounts.filter(
+        //     (acc) =>
+        // acc.Client === "SCS Construction" ||
+        // acc.Client === "HD Roofing" ||
+        // acc.Client === "Integrity Pro Roofing" ||
+        // acc.Account === "Peterson Roofing"
+        // );
 
-        // * remove all facilities
-        accounts = accounts.filter((acc) => !acc.Tag?.includes("facilities"));
-
+        if (RUN_FACILITIES) {
+            // * keep all facilities
+            accounts = accounts.filter(
+                (acc) => acc.Tag?.includes("facilities") || acc.Tag?.includes("property-management")
+            );
+        } else {
+            // * remove all facilities
+            accounts = accounts.filter(
+                (acc) =>
+                    !acc.Tag?.includes("facilities") && !acc.Tag?.includes("property-management")
+            );
+        }
         await slackNotification("Launching texts...");
 
-        for (let i = 1; i <= numContacts; i++) {
+        for (let i = 1; i <= RUN_FACILITIES; i++) {
             const arrayTextOutreach = accounts.map((account) => textOutreach(account));
 
             const results = await Promise.all(arrayTextOutreach);
@@ -76,7 +94,7 @@ const numContacts = 60;
                 }
             }
 
-            if (i === numContacts) {
+            if (i === NUM_CONTACTS) {
                 const arrayNumContacts = accounts.map((account) => numTextContacts(account));
 
                 const numContactResults = await Promise.all(arrayNumContacts);
@@ -84,19 +102,19 @@ const numContacts = 60;
                 for (let result of numContactResults) {
                     await Airtable.updateCampaign(result.recordID, {
                         "Campaign Status": "Live",
-                        "Contacts Left": result.numContacts.length,
+                        "Contacts Left": result.NUM_CONTACTS.length,
                         "Last Updated": today,
                     });
 
-                    if (result.numContacts.length <= 150) {
+                    if (result.NUM_CONTACTS.length <= 150) {
                         await slackNotification(
-                            `\n*Account:* ${result.Account}\n*Campaign:* ${result.Campaign} \n*Number of contacts:* ${result.numContacts.length}\n`
+                            `\n*Account:* ${result.Account}\n*Campaign:* ${result.Campaign} \n*Number of contacts:* ${result.NUM_CONTACTS.length}\n`
                         );
                     }
                 }
             }
 
-            console.log(`\n --- Texts sent: ${i} --- \n`);
+            console.log(`\n --- Texts sent: ${i} / ${String(NUM_CONTACTS)} --- \n`);
             await _.minutesWait(2);
         }
     } catch (error) {
