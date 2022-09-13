@@ -22,7 +22,6 @@ const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
     try {
         const getCampaigns = await Airtable.getCampaigns();
         let accounts = _.accountsToRun(getCampaigns);
-        console.log(accounts);
 
         // * remove these clients/accounts
         // accounts = accounts.filter(
@@ -56,7 +55,7 @@ const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
         }
         await slackNotification("Launching texts...");
 
-        for (let i = 1; i <= RUN_FACILITIES; i++) {
+        for (let i = 1; i <= NUM_CONTACTS; i++) {
             const arrayTextOutreach = accounts.map((account) => textOutreach(account));
 
             const results = await Promise.all(arrayTextOutreach);
