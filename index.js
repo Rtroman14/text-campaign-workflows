@@ -26,19 +26,27 @@ const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
         // * remove these clients/accounts
         // accounts = accounts.filter(
         //     (acc) =>
-        // acc.Client !== "SCS Construction" &&
-        // acc.Client !== "HD Roofing" &&
-        // acc.Client !== "Integrity Pro Roofing" &&
-        // acc.Client !== "Dorothy Gale Roofing Group"
+        //         acc.Client !== "SIRC" &&
+        //         acc.Client !== "Built Right Roofing" &&
+        //         acc.Client !== "HD Roofing" &&
+        //         acc.Client !== "All Elements" &&
+        //         acc.Client !== "Dr. Roof" &&
+        //         acc.Client !== "Greentek" &&
+        //         acc.Client !== "Integrity Pro Roofing" &&
+        //         acc.Client !== "Pinnacle Roofing Group" &&
+        //         acc.Client !== "SCS Construction" &&
+        //         acc.Client !== "Stone Roofing" &&
+        //         acc.Account !== "Farha Roofing - Lamar" &&
+        //         acc.Client !== "Level Edge Construction"
         // );
 
         // * keep these clients/accounts
         // accounts = accounts.filter(
         //     (acc) =>
-        // acc.Client === "SCS Construction" ||
-        // acc.Client === "HD Roofing" ||
-        // acc.Client === "Integrity Pro Roofing" ||
-        // acc.Account === "Peterson Roofing"
+        //         // acc.Client === "SCS Construction" ||
+        //         // acc.Client === "HD Roofing" ||
+        //         // acc.Client === "Integrity Pro Roofing" ||
+        //         // acc.Account === "Cannon Roofing"
         // );
 
         if (RUN_FACILITIES) {
@@ -93,25 +101,25 @@ const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
                 }
             }
 
-            if (i === NUM_CONTACTS) {
-                const arrayNumContacts = accounts.map((account) => numTextContacts(account));
+            // if (i === NUM_CONTACTS) {
+            //     const arrayNumContacts = accounts.map((account) => numTextContacts(account));
 
-                const numContactResults = await Promise.all(arrayNumContacts);
+            //     const numContactResults = await Promise.all(arrayNumContacts);
 
-                for (let result of numContactResults) {
-                    await Airtable.updateCampaign(result.recordID, {
-                        "Campaign Status": "Live",
-                        "Contacts Left": result.NUM_CONTACTS.length,
-                        "Last Updated": today,
-                    });
+            //     for (let result of numContactResults) {
+            //         await Airtable.updateCampaign(result.recordID, {
+            //             "Campaign Status": "Live",
+            //             "Contacts Left": result.NUM_CONTACTS.length,
+            //             "Last Updated": today,
+            //         });
 
-                    if (result.NUM_CONTACTS.length <= 150) {
-                        await slackNotification(
-                            `\n*Account:* ${result.Account}\n*Campaign:* ${result.Campaign} \n*Number of contacts:* ${result.NUM_CONTACTS.length}\n`
-                        );
-                    }
-                }
-            }
+            //         if (result.NUM_CONTACTS.length <= 150) {
+            //             await slackNotification(
+            //                 `\n*Account:* ${result.Account}\n*Campaign:* ${result.Campaign} \n*Number of contacts:* ${result.NUM_CONTACTS.length}\n`
+            //             );
+            //         }
+            //     }
+            // }
 
             console.log(`\n --- Texts sent: ${i} / ${String(NUM_CONTACTS)} --- \n`);
             await _.minutesWait(2);
