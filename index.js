@@ -101,25 +101,14 @@ const NUM_CONTACTS = RUN_FACILITIES ? 20 : 60;
                 }
             }
 
-            // if (i === NUM_CONTACTS) {
-            //     const arrayNumContacts = accounts.map((account) => numTextContacts(account));
-
-            //     const numContactResults = await Promise.all(arrayNumContacts);
-
-            //     for (let result of numContactResults) {
-            //         await Airtable.updateCampaign(result.recordID, {
-            //             "Campaign Status": "Live",
-            //             "Contacts Left": result.NUM_CONTACTS.length,
-            //             "Last Updated": today,
-            //         });
-
-            //         if (result.NUM_CONTACTS.length <= 150) {
-            //             await slackNotification(
-            //                 `\n*Account:* ${result.Account}\n*Campaign:* ${result.Campaign} \n*Number of contacts:* ${result.NUM_CONTACTS.length}\n`
-            //             );
-            //         }
-            //     }
-            // }
+            if (i === NUM_CONTACTS) {
+                for (let account of accounts) {
+                    await Airtable.updateCampaign(account.recordID, {
+                        "Campaign Status": "Live",
+                        "Last Updated": today,
+                    });
+                }
+            }
 
             console.log(`\n --- Texts sent: ${i} / ${String(NUM_CONTACTS)} --- \n`);
             await _.minutesWait(2);
